@@ -1,5 +1,3 @@
-from turtle import ondrag
-from unicodedata import category
 from django.db import models
 
 
