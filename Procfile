@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath exercise_app exercise_app.wsgi
+web: gunicorn --pythonpath exercise_app.wsgi
