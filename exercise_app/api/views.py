@@ -33,4 +33,4 @@ class ExerciseListByCategoryView(generics.ListAPIView):
         if category_id is not None:
             exercise_ids = ExerciseSet.objects.filter(category__id=category_id).prefetch_related('exercise').values_list('exercise_id')
             queryset = Exercise.objects.filter(pk__in=exercise_ids)
-        return queryset
+            return queryset
