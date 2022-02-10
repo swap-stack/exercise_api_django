@@ -1,7 +1,9 @@
-from unicodedata import category
 from rest_framework import viewsets, generics
 from api.models import ExerciseCategory, Exercise, ExerciseSet
-from api.serializers import ExerciseCategorySerializer, ExerciseListByCategorySerializer, ExerciseSerializer, ExerciseSetSerializer
+from api.serializers import (
+    ExerciseSerializer, ExerciseSetSerializer,
+    ExerciseCategorySerializer, ExerciseListByCategorySerializer
+    )
 
 
 class ExerciseCategoryViewset(viewsets.ReadOnlyModelViewSet):
@@ -26,10 +28,9 @@ class ExerciseListByCategoryView(generics.ListAPIView):
     serializer_class = ExerciseListByCategorySerializer
 
     def get_queryset(self):
-        queryset = Exercise.objects.all()
         category_id = self.request.query_params.get('category_id')
 
         if category_id is not None:
-            queryset = queryset.filter(category__id=category_id)
-            print(queryset)
+            exercise_ids = ExerciseSet.objects.filter(category__id=category_id).prefetch_related('exercise').values_list('exercise_id')
+            queryset = Exercise.objects.filter(pk__in=exercise_ids)
         return queryset

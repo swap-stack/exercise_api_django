@@ -9,20 +9,24 @@ class ExerciseCategorySerializer(serializers.ModelSerializer):
     calories = serializers.SerializerMethodField('get_total_calories')
 
     def get_total_exercise(self, instance):
-        return instance.exercise_set.all().count()
+        return ExerciseSet.objects.filter(category=instance).count()
 
     def get_total_time(self, instance):
-        return sum(Exercise.objects.filter(category=instance).values_list('time_in_second', flat=True))
+        return sum(ExerciseSet.objects.filter(
+            category=instance).prefetch_related(
+                'exercise').values_list('exercise__time_in_second', flat=True))        
 
     def get_total_calories(self, instance):
-        return sum(Exercise.objects.filter(category=instance).values_list('calories', flat=True))
+        return sum(ExerciseSet.objects.filter(
+            category=instance).prefetch_related(
+                'exercise').values_list('exercise__calories', flat=True))
 
     class Meta:
         model = ExerciseCategory
         fields = (
             'id',
             'name',
-            'icon',
+            'image',
             'total_exercise',
             'time',
             'calories',

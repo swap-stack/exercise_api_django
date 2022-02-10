@@ -13,7 +13,7 @@ class ExerciseCategory(models.Model):
 
 class Exercise(models.Model):
     name = models.CharField(max_length=255)
-    category = models.ForeignKey(ExerciseCategory, on_delete=models.SET_NULL, null=True)
+    # category = models.ForeignKey(ExerciseCategory, on_delete=models.SET_NULL, null=True)
     category_name = models.CharField(max_length=255)
     time_in_second = models.IntegerField()
     calories = models.IntegerField()
@@ -31,4 +31,4 @@ class ExerciseSet(models.Model):
 
 
     def __str__(self) -> str:
-        return str(self.category_name)
+        return str(self.category)
